@@ -1,19 +1,19 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var ReactRouter = require('react-router');
 
+var ReactRouter = require('react-router');
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
-var Navigation = ReactRouter.Navigation;
+var History = ReactRouter.History;
 var createBrowserHistory = require('history/lib/createBrowserHistory');
 
 var h = require('./helpers');
-
 /*
  App
 */
 
-var App = React.createClass( {
+var App = React.createClass({
+
   render : function() {
     return (
     <div className="catch-of-the-day">
@@ -27,14 +27,12 @@ var App = React.createClass( {
   }
 });
 
-
 /*
  Header
  <Header/>
 */
-
 var Header = React.createClass({
-  render : function(){
+  render : function() {
     return (
       <header className="top">
         <h1>Catch
@@ -47,35 +45,31 @@ var Header = React.createClass({
       </header>
     )
   }
-});
-
+})
 
 /*
  Order
  <Order/>
 */
-
 var Order = React.createClass({
-  render : function(){
+  render : function() {
     return (
       <p>Order</p>
     )
   }
-});
-
+})
 
 /*
  Inventory
  <Inventory/>
 */
-
 var Inventory = React.createClass({
-  render : function(){
+  render : function() {
     return (
       <p>Inventory</p>
     )
   }
-});
+})
 
 
 /*
@@ -84,17 +78,23 @@ var Inventory = React.createClass({
 */
 
 var StorePicker = React.createClass({
-
+    mixins : [History],
+  goToStore : function(event) {
+    event.preventDefault();
+    // get the data from the input
+    var storeId = this.refs.storeId.value;
+    this.history.pushState(null, '/store/' + storeId);
+  },
   render : function() {
-    var name = "Matt";
     return (
-      <form className="store-selector">
+      <form className="store-selector" onSubmit={this.goToStore}>
         <h2>Please Enter A Store {name}</h2>
-        <input type="text" ref="storeID" defaultValue={h.getFunName()} required />
+        <input type="text" ref="storeId" defaultValue={h.getFunName()} required />
         <input type="Submit" />
       </form>
     )
   }
+
 });
 
 /*
@@ -102,7 +102,6 @@ var StorePicker = React.createClass({
 */
 
 var NotFound = React.createClass({
-
   render : function() {
     return <h1>Not Found!</h1>
   }
